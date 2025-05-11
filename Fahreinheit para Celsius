@@ -1,4 +1,11 @@
+inicio = int(input("Indique o valor inicial em Fahreinheit : "))
+final = int(input("Indique o valor final em Fahreinheit : "))
 print("Fahreinheit | Celsius")
-for i in range(45,81,1):
+if inicio > final:
+    passo = -1
+    final = final - 2
+else:
+    passo = 1
+for i in range(inicio,final+1,passo):
     celsius = (i-32)/1.8
     print(i,"°F |", celsius,"°C")
