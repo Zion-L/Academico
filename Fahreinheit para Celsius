@@ -1,0 +1,4 @@
+print("Fahreinheit | Celsius")
+for i in range(45,81,1):
+    celsius = (i-32)/1.8
+    print(i,"°F |", celsius,"°C")
