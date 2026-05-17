@@ -1,8 +1,19 @@
 import json
+import urllib.request
 from pathlib import Path
 
 ARQUIVO = Path(__file__).resolve().parent / "dados.json"
-VERSAO = "0.1.0"
+VERSAO = "0.2.0"
+API_URL = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
+
+
+def buscar_cotacao_dolar():
+    try:
+        with urllib.request.urlopen(API_URL, timeout=5) as resposta:
+            dados = json.loads(resposta.read())
+            return float(dados["USDBRL"]["bid"])
+    except Exception:
+        return None
 
 
 def carregar(caminho=ARQUIVO):
@@ -41,7 +52,15 @@ def listar(gastos):
     for indice, gasto in enumerate(gastos, start=1):
         print(f"{indice}. {gasto['descricao']} - R$ {gasto['valor']:.2f}")
 
-    print(f"Total: R$ {total(gastos):.2f}")
+    total_brl = total(gastos)
+    print(f"\nTotal: R$ {total_brl:.2f}")
+
+    cotacao = buscar_cotacao_dolar()
+    if cotacao:
+        print(f"Cotação do dólar: R$ {cotacao:.2f}")
+        print(f"Total em USD: $ {total_brl / cotacao:.2f}")
+    else:
+        print("(cotação do dólar indisponível no momento)")
 
 
 def menu():
