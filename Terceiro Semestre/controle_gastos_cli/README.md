@@ -1,6 +1,10 @@
+## Aplicação publicada
+
+https://zion-l.github.io/Academico/
+
 # Controle de Gastos CLI
 
-Versão atual: **0.1.0**
+Versão atual: **0.2.0**
 
 ## 1. Problema escolhido
 
