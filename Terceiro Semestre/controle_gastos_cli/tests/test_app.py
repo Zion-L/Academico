@@ -38,6 +38,12 @@ class TestApp(unittest.TestCase):
         with self.assertRaises(ValueError):
             adicionar([], "", 10)
 
+    def test_buscar_cotacao_dolar(self):
+        from main import buscar_cotacao_dolar
+        cotacao = buscar_cotacao_dolar()
+        if cotacao is not None:
+            self.assertIsInstance(cotacao, float)
+            self.assertGreater(cotacao, 0)
 
 if __name__ == "__main__":
     unittest.main()
