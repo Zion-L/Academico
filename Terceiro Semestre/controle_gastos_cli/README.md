@@ -56,6 +56,10 @@ controle_gastos_cli/
 pip install -r requirements.txt
 ```
 
+```bash
+MONGO_URI=sua_conexao_do_mongodb_aqui
+```
+
 ## 8. Como executar
 
 ```bash
@@ -67,7 +71,7 @@ python main.py
 1. escolha a opção de adicionar gasto
 2. informe descrição e valor
 3. use a opção de listar para ver os registros e o total
-4. os dados ficam salvos em `dados.json`
+4.Os dados agora são sincronizados e armazenados diretamente na coleção do MongoDB definida no escopo.
 
 ## 10. Testes automatizados
 
