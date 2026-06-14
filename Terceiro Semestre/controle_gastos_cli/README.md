@@ -40,8 +40,10 @@ controle_gastos_cli/
 |-- .github/
 |   |-- workflows/
 |       |-- ci.yml
+|-- env
 |-- tests/
 |   |-- test_app.py
+|-- .env
 |-- dados.json
 |-- main.py
 |-- README.md
