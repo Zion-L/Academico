@@ -88,3 +88,5 @@ O projeto usa apenas uma dependência externa para análise estática:
 - `ruff==0.11.5`
 
 Na execução principal da aplicação, a lógica usa apenas biblioteca padrão do Python.
+
+Feito por Vitor Rodrigues e Zion lopes
