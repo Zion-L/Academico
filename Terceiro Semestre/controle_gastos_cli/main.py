@@ -1,10 +1,17 @@
-import json
 import urllib.request
-from pathlib import Path
+import json
+import os
+from dotenv import load_dotenv
+from pymongo import MongoClient
 
-ARQUIVO = Path(__file__).resolve().parent / "dados.json"
-VERSAO = "0.2.0"
+load_dotenv()
+
+VERSAO = "0.3.0"
 API_URL = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
+
+client = MongoClient(os.environ["MONGO_URI"])
+db = client["controle_gastos"]
+colecao = db["gastos"]
 
 
 def buscar_cotacao_dolar():
@@ -16,28 +23,18 @@ def buscar_cotacao_dolar():
         return None
 
 
-def carregar(caminho=ARQUIVO):
-    try:
-        with open(caminho, "r", encoding="utf-8") as arquivo:
-            return json.load(arquivo)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+def carregar():
+    return list(colecao.find({}, {"_id": 0}))
 
 
-def salvar(gastos, caminho=ARQUIVO):
-    with open(caminho, "w", encoding="utf-8") as arquivo:
-        json.dump(gastos, arquivo, ensure_ascii=False, indent=2)
-
-
-def adicionar(gastos, descricao, valor):
+def adicionar(descricao, valor):
     descricao = descricao.strip()
     valor = round(float(valor), 2)
 
     if not descricao or valor < 0:
         raise ValueError("Gasto inválido")
 
-    gastos.append({"descricao": descricao, "valor": valor})
-    return gastos
+    colecao.insert_one({"descricao": descricao, "valor": valor})
 
 
 def total(gastos):
@@ -64,8 +61,6 @@ def listar(gastos):
 
 
 def menu():
-    gastos = carregar()
-
     while True:
         print(f"\nControle de Gastos CLI v{VERSAO}")
         print("1 - Adicionar gasto")
@@ -76,17 +71,16 @@ def menu():
         if opcao == "1":
             descricao = input("Descrição: ").strip()
             valor = input("Valor: ").replace(",", ".").strip()
-
             try:
-                adicionar(gastos, descricao, valor)
+                adicionar(descricao, valor)
+                print("Gasto salvo.")
             except ValueError:
                 print("Gasto inválido.")
-                continue
 
-            salvar(gastos)
-            print("Gasto salvo.")
         elif opcao == "2":
+            gastos = carregar()
             listar(gastos)
+
         elif opcao == "0":
             break
         else:
